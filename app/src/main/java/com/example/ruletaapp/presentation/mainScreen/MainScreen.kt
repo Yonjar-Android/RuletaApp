@@ -22,10 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.ruletaapp.ui.theme.redUi
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,23 +40,31 @@ fun MainScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            EditButton("Crear Ruleta", redUi)
+            EditButton(
+                buttonText = "Crear Ruleta", color = redUi, height = 60,
+                navigate = { navHostController.navigate("CreateRoulette") }
+            )
+
             Spacer(modifier = Modifier.size(20.dp))
-            EditButton("Ruletas Creadas", redUi)
+
+            EditButton(
+                buttonText = "Ruletas Creadas", color = redUi, height = 100,
+                navigate = { navHostController.navigate("CreateRoulette") }
+            )
         }
     }
 }
 
 @Composable
-fun EditButton(buttonText: String, color: Color) {
+fun EditButton(buttonText: String, color: Color, height:Int, navigate: () -> Unit) {
     Button(
         onClick = {
-
+            navigate()
         },
         colors = ButtonDefaults.buttonColors(containerColor = color),
         modifier = Modifier
             .width(250.dp)
-            .height(100.dp),
+            .height(height.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(
