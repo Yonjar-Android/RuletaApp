@@ -91,6 +91,9 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    // Navegation
+    implementation(libs.androidx.navigation.compose)
 }
 
 kapt {
