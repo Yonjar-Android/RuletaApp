@@ -49,7 +49,7 @@ fun MainScreen(navHostController: NavHostController) {
 
             EditButton(
                 buttonText = "Ruletas Creadas", color = redUi, height = 100,
-                navigate = { navHostController.navigate("CreateRoulette") }
+                navigate = { navHostController.navigate("RoulettesCreated") }
             )
         }
     }

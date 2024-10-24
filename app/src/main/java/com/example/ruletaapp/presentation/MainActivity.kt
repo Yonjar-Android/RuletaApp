@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ruletaapp.presentation.createRoulette.CreateRouletteScreen
 import com.example.ruletaapp.presentation.mainScreen.MainScreen
+import com.example.ruletaapp.presentation.roulettesCreated.RouletteCreatedScreen
 import com.example.ruletaapp.ui.theme.RuletaAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,6 +30,9 @@ class MainActivity : ComponentActivity() {
 
                     composable("CreateRoulette") {
                         CreateRouletteScreen(navHostController)
+                    }
+                    composable("RoulettesCreated"){
+                        RouletteCreatedScreen(navHostController)
                     }
                 }
             }
