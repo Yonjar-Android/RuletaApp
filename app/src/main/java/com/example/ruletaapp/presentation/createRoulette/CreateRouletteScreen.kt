@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -54,7 +55,9 @@ fun CreateRouletteScreen(
     createRouletteViewModel: CreateRouletteViewModel
 ) {
 
-    var tasks by rememberSaveable { mutableStateOf(listOf<RouletteOption>()) }
+    var options by rememberSaveable { mutableStateOf(listOf<RouletteOption>()) }
+
+    var message = createRouletteViewModel.message.collectAsState()
 
     val context = LocalContext.current
 
@@ -112,7 +115,7 @@ fun CreateRouletteScreen(
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    tasks = tasks + RouletteOption(rouletteOption = option)
+                    options = options + RouletteOption(rouletteOption = option)
                     option = ""
                 }
             }
@@ -137,18 +140,29 @@ fun CreateRouletteScreen(
             Spacer20Dp()
 
             LazyColumn {
-                items(tasks) {
-                    OptionItem(it) { tasks = tasks - it }
+                items(options) {
+                    OptionItem(it) { options = options - it }
                 }
             }
         }
     }
 
+    // Muestra el diálogo para confirmar la creacion de una ruleta
     if (show) {
         ConfirmDialog(rouletteName = rouletteName,
             viewModel = createRouletteViewModel,
-            rouletteOptions = tasks)
+            rouletteOptions = options, cleanFields = {
+                option = ""
+                rouletteName = ""
+                options = listOf()
+            })
         { show = false }
+    }
+
+    // Muestra el mensaje actualizado desde el viewModel y reinicia el estado
+    if (message.value.isNotBlank()){
+        Toast.makeText(context, message.value, Toast.LENGTH_SHORT).show()
+        createRouletteViewModel.restartState()
     }
 
 }
@@ -222,6 +236,7 @@ fun ConfirmDialog(
     rouletteName: String,
     viewModel: CreateRouletteViewModel,
     rouletteOptions: List<RouletteOption>,
+    cleanFields: () -> Unit,
     closeDialog: () -> Unit
 ) {
     AlertDialog(
@@ -233,6 +248,7 @@ fun ConfirmDialog(
                 viewModel.createRoulette(
                     RouletteModel(rouletteName = rouletteName, options = rouletteOptions)
                 )
+                cleanFields.invoke()
                 closeDialog.invoke()
             }) {
                 Text(text = "Crear", fontSize = 18.sp, fontWeight = FontWeight.Bold)

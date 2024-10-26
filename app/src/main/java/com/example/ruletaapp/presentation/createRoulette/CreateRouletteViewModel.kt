@@ -16,29 +16,28 @@ class CreateRouletteViewModel @Inject constructor(
     private val roomRepository: RoomRepository
 ) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow<Boolean>(false)
+    private val _isLoading = MutableStateFlow(false)
     var isLoading:StateFlow<Boolean> = _isLoading
 
-    private val _error = MutableStateFlow<String>("")
-    var error: StateFlow<String> = _error
-
-    init {
-        viewModelScope.launch {
-            val response = roomRepository.getRoulettes()
-
-            println(response)
-        }
-    }
+    private val _message = MutableStateFlow("")
+    var message: StateFlow<String> = _message
 
     fun createRoulette(rouletteModel: RouletteModel) {
+        _isLoading.update { true }
         viewModelScope.launch {
             try {
-                roomRepository.createRoulette(rouletteModel)
+                val response = roomRepository.createRoulette(rouletteModel)
+                 _message.update { response }
             } catch (e: Exception) {
-                _error.update {
+                _message.update {
                     "Error: ${e.message}"
                 }
             }
         }
+    }
+
+    fun restartState(){
+        _message.update { "" }
+        _isLoading.update { false }
     }
 }
