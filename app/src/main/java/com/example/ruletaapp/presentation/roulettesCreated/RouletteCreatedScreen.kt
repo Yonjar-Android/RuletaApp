@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,9 +34,12 @@ import com.example.ruletaapp.presentation.createRoulette.Spacer20Dp
 import com.example.ruletaapp.ui.theme.redUi
 
 @Composable
-fun RouletteCreatedScreen(navHostController: NavHostController) {
+fun RouletteCreatedScreen(
+    navHostController: NavHostController,
+    roulettesCreatedViewModel: RoulettesCreatedViewModel
+) {
 
-    val list = listOf<String>("Ruleta de papas", "Ruleta de animales", "Ruleta de comidas")
+    val roulettes = roulettesCreatedViewModel.roulettesState.collectAsState()
 
 
     Column(
@@ -60,15 +64,15 @@ fun RouletteCreatedScreen(navHostController: NavHostController) {
         Spacer20Dp()
 
         LazyColumn {
-            items(list) {
-                RouletteItem(it)
+            items(roulettes.value) {
+                RouletteItem(it.rouletteName, it.id)
             }
         }
     }
 }
 
 @Composable
-fun RouletteItem(title: String) {
+fun RouletteItem(title: String, rouletteId: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

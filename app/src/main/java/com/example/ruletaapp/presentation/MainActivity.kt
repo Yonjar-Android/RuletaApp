@@ -12,6 +12,7 @@ import com.example.ruletaapp.presentation.createRoulette.CreateRouletteScreen
 import com.example.ruletaapp.presentation.createRoulette.CreateRouletteViewModel
 import com.example.ruletaapp.presentation.mainScreen.MainScreen
 import com.example.ruletaapp.presentation.roulettesCreated.RouletteCreatedScreen
+import com.example.ruletaapp.presentation.roulettesCreated.RoulettesCreatedViewModel
 import com.example.ruletaapp.ui.theme.RuletaAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +25,8 @@ class MainActivity : ComponentActivity() {
             RuletaAppTheme {
 
                 val createRouletteViewModel: CreateRouletteViewModel by viewModels()
+
+                val roulettesCreatedViewModel: RoulettesCreatedViewModel by viewModels()
 
                 val navHostController = rememberNavController()
 
@@ -39,7 +42,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("RoulettesCreated") {
-                        RouletteCreatedScreen(navHostController)
+                        RouletteCreatedScreen(
+                            navHostController,
+                            roulettesCreatedViewModel = roulettesCreatedViewModel
+                        )
                     }
                 }
             }

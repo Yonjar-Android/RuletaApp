@@ -6,11 +6,12 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.ruletaapp.data.models.RouletteRoomModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RouletteDao {
     @Query("Select * From roulette")
-    suspend fun getAllRoulette(): List<RouletteRoomModel>
+    fun getAllRoulette(): Flow<List<RouletteRoomModel>>
 
     @Insert
     suspend fun insertRoulette(roulette:RouletteRoomModel): Long
