@@ -4,6 +4,7 @@ import com.example.ruletaapp.data.database.dao.RouletteDao
 import com.example.ruletaapp.data.database.dao.RouletteOptionDao
 import com.example.ruletaapp.data.models.RouletteOptionRoomModel
 import com.example.ruletaapp.presentation.models.RouletteModel
+import com.example.ruletaapp.utils.toOptionModel
 import com.example.ruletaapp.utils.toRoomModel
 import com.example.ruletaapp.utils.toRouletteModel
 import kotlinx.coroutines.flow.Flow
@@ -42,6 +43,22 @@ class RoomRepository @Inject constructor(
             it.map {
                 it.toRouletteModel(listOf())
             }
+        }
+    }
+
+    suspend fun getRouletteById(rouletteId: Int):RouletteModel{
+        try {
+            val response = rouletteDao.getRouletteById(rouletteId)
+
+            val options = optionDao.getAllFromRoulette(response.id)
+
+            val roulette = response.toRouletteModel(options = options.map {
+                it.toOptionModel()
+            })
+
+            return roulette
+        } catch (e:Exception){
+            return RouletteModel(rouletteName = "", options = listOf())
         }
     }
 

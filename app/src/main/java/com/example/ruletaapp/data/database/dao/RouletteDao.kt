@@ -13,6 +13,9 @@ interface RouletteDao {
     @Query("Select * From roulette")
     fun getAllRoulette(): Flow<List<RouletteRoomModel>>
 
+    @Query("Select * From roulette Where id = :id")
+    suspend fun getRouletteById(id:Int): RouletteRoomModel
+
     @Insert
     suspend fun insertRoulette(roulette:RouletteRoomModel): Long
 

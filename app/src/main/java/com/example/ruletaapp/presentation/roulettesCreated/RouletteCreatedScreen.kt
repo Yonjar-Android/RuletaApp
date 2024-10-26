@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -35,6 +36,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -70,8 +72,8 @@ fun RouletteCreatedScreen(
         mutableIntStateOf(-1)
     }
 
-    if (loading.value){
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+    if (loading.value) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(color = redUi)
         }
     }
@@ -99,7 +101,7 @@ fun RouletteCreatedScreen(
 
         LazyColumn {
             itemsIndexed(roulettes.value) { index, roulette ->
-                RouletteItem(roulette.rouletteName, roulette.id) {
+                RouletteItem(roulette.rouletteName, roulette.id, navHostController) {
                     show = true
                     rouletteSelected = index
                 }
@@ -118,7 +120,7 @@ fun RouletteCreatedScreen(
     }
 
     // Muestra el mensaje actualizado desde el viewModel y reinicia el estado
-    if (message.value.isNotBlank()){
+    if (message.value.isNotBlank()) {
         Toast.makeText(context, message.value, Toast.LENGTH_SHORT).show()
         roulettesCreatedViewModel.restartState()
     }
@@ -126,12 +128,21 @@ fun RouletteCreatedScreen(
 }
 
 @Composable
-fun RouletteItem(title: String, rouletteId: Int, openDialog: () -> Unit) {
+fun RouletteItem(
+    title: String,
+    rouletteId: Int,
+    navHostController: NavHostController,
+    openDialog: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .background(redUi),
+            .clip(RoundedCornerShape(10.dp))
+            .background(redUi)
+            .clickable {
+                navHostController.navigate("DetailRoulette/${title}/${rouletteId}")
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
