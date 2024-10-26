@@ -88,6 +88,7 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.room.compiler)
     testImplementation(libs.androidx.room.testing)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
