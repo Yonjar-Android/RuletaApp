@@ -31,6 +31,7 @@ class RoulettesCreatedViewModel @Inject constructor(
     var message: StateFlow<String> = _message
 
     fun deleteRoulette(rouletteModel: RouletteModel){
+        _isLoading.update { true }
         viewModelScope.launch {
             try {
                 val response = roomRepository.deleteRoulette(rouletteModel)
