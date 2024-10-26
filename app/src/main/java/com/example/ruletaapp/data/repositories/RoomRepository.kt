@@ -44,4 +44,13 @@ class RoomRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun deleteRoulette(roulette: RouletteModel):String{
+        try {
+            rouletteDao.deleteRoulette(roulette.toRoomModel())
+            return "Se ha eliminado la ruleta exitosamente"
+        } catch (e: Exception){
+            return "Error: ${e.message}"
+        }
+    }
 }

@@ -57,7 +57,7 @@ fun CreateRouletteScreen(
 
     var options by rememberSaveable { mutableStateOf(listOf<RouletteOption>()) }
 
-    var message = createRouletteViewModel.message.collectAsState()
+    val message = createRouletteViewModel.message.collectAsState()
 
     val context = LocalContext.current
 
