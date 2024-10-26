@@ -10,10 +10,13 @@ import com.example.ruletaapp.data.models.RouletteOptionRoomModel
 @Dao
 interface RouletteOptionDao {
     @Query("Select * from `roulette-option` Where idRoulette= :idRoulette")
-    fun getAllFromRoulette(idRoulette:Int): List<RouletteOptionRoomModel>
+    suspend fun getAllFromRoulette(idRoulette:Int): List<RouletteOptionRoomModel>
 
     @Insert
-    fun insertRouletteOption(rouletteOption:RouletteOptionRoomModel)
+    fun insertAllOptions(options:List<RouletteOptionRoomModel>)
+
+    @Insert
+    suspend fun insertRouletteOption(rouletteOption:RouletteOptionRoomModel)
 
     @Update
     fun updateRouletteOption(rouletteOption: RouletteOptionRoomModel)

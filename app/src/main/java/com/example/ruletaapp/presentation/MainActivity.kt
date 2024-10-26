@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ruletaapp.presentation.createRoulette.CreateRouletteScreen
+import com.example.ruletaapp.presentation.createRoulette.CreateRouletteViewModel
 import com.example.ruletaapp.presentation.mainScreen.MainScreen
 import com.example.ruletaapp.presentation.roulettesCreated.RouletteCreatedScreen
 import com.example.ruletaapp.ui.theme.RuletaAppTheme
@@ -21,6 +23,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RuletaAppTheme {
 
+                val createRouletteViewModel: CreateRouletteViewModel by viewModels()
+
                 val navHostController = rememberNavController()
 
                 NavHost(navController = navHostController, startDestination = "MainScreen") {
@@ -29,9 +33,12 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("CreateRoulette") {
-                        CreateRouletteScreen(navHostController)
+                        CreateRouletteScreen(
+                            navHostController,
+                            createRouletteViewModel = createRouletteViewModel
+                        )
                     }
-                    composable("RoulettesCreated"){
+                    composable("RoulettesCreated") {
                         RouletteCreatedScreen(navHostController)
                     }
                 }
